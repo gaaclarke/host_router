@@ -3,6 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'messages.dart';
 
+class _MyFlutterRouterApi extends FlutterRouterApi {
+  void Function(String name) pusher;
+  void Function() popper;
+  static _MyFlutterRouterApi _instance = null;
+  static _MyFlutterRouterApi get instance {
+    if (_instance == null) {
+      _instance = _MyFlutterRouterApi();
+      FlutterRouterApi.setup(_instance);
+      print('setup happened');
+    }
+    return _instance;
+  }
+
+  void pushRoute(PushRoute arg) {
+    print('got push route: ${arg.name}');
+    pusher(arg.name);
+  }
+  
+  void popRoute() {
+    popper();
+  }
+}
+
 class RouterNavigator {
   final HostRouterApp router;
   final BuildContext context;
@@ -63,6 +86,8 @@ class HostRouterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _MyFlutterRouterApi.instance.pusher = (String name) { _push(context, name); };
+    _MyFlutterRouterApi.instance.popper = () { _pop(context); };
     return _appBuilder((RouteSettings settings) {
       return _makeRoute(routeMap, settings);
     });

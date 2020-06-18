@@ -26,6 +26,10 @@ static NSDictionary* wrapResult(NSDictionary *result, FlutterError *error) {
 +(HRPushRoute*)fromMap:(NSDictionary*)dict;
 -(NSDictionary*)toMap;
 @end
+@interface HRPopRoute ()
++(HRPopRoute*)fromMap:(NSDictionary*)dict;
+-(NSDictionary*)toMap;
+@end
 
 @implementation HRPushRoute
 +(HRPushRoute*)fromMap:(NSDictionary*)dict {
@@ -41,6 +45,53 @@ static NSDictionary* wrapResult(NSDictionary *result, FlutterError *error) {
 }
 @end
 
+@implementation HRPopRoute
++(HRPopRoute*)fromMap:(NSDictionary*)dict {
+  HRPopRoute* result = [[HRPopRoute alloc] init];
+  result.name = dict[@"name"];
+  if ((NSNull *)result.name == [NSNull null]) {
+    result.name = nil;
+  }
+  return result;
+}
+-(NSDictionary*)toMap {
+  return [NSDictionary dictionaryWithObjectsAndKeys:(self.name ? self.name : [NSNull null]), @"name", nil];
+}
+@end
+
+@interface HRFlutterRouterApi ()
+@property (nonatomic, strong) NSObject<FlutterBinaryMessenger>* binaryMessenger;
+@end
+
+@implementation HRFlutterRouterApi
+- (instancetype)initWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)binaryMessenger {
+  self = [super init];
+  if (self) {
+    self.binaryMessenger = binaryMessenger;
+  }
+  return self;
+}
+
+- (void)pushRoute:(HRPushRoute*)input completion:(void(^)(NSError*))completion {
+  FlutterBasicMessageChannel *channel =
+    [FlutterBasicMessageChannel
+      messageChannelWithName:@"dev.flutter.pigeon.FlutterRouterApi.pushRoute"
+      binaryMessenger:self.binaryMessenger];
+  NSDictionary* inputMap = [input toMap];
+  [channel sendMessage:inputMap reply:^(id reply) {
+    completion(nil);
+  }];
+}
+- (void)popRoute:(void(^)(NSError*))completion {
+  FlutterBasicMessageChannel *channel =
+    [FlutterBasicMessageChannel
+      messageChannelWithName:@"dev.flutter.pigeon.FlutterRouterApi.popRoute"
+      binaryMessenger:self.binaryMessenger];
+  [channel sendMessage:nil reply:^(id reply) {
+    completion(nil);
+  }];
+}
+@end
 void HRHostRouterApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<HRHostRouterApi> api) {
   {
     FlutterBasicMessageChannel *channel =
@@ -52,6 +103,23 @@ void HRHostRouterApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<HRHostR
         FlutterError *error;
         HRPushRoute *input = [HRPushRoute fromMap:message];
         [api pushRoute:input error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [FlutterBasicMessageChannel
+        messageChannelWithName:@"dev.flutter.pigeon.HostRouterApi.popRoute"
+        binaryMessenger:binaryMessenger];
+    if (api) {
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        FlutterError *error;
+        HRPopRoute *input = [HRPopRoute fromMap:message];
+        [api popRoute:input error:&error];
         callback(wrapResult(nil, error));
       }];
     }

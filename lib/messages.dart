@@ -20,11 +20,73 @@ class PushRoute {
   }
 }
 
+class PopRoute {
+  String name;
+  // ignore: unused_element
+  Map<dynamic, dynamic> _toMap() {
+    final Map<dynamic, dynamic> pigeonMap = <dynamic, dynamic>{};
+    pigeonMap['name'] = name;
+    return pigeonMap;
+  }
+  // ignore: unused_element
+  static PopRoute _fromMap(Map<dynamic, dynamic> pigeonMap) {
+    final PopRoute result = PopRoute();
+    result.name = pigeonMap['name'];
+    return result;
+  }
+}
+
+abstract class FlutterRouterApi {
+  void pushRoute(PushRoute arg);
+  void popRoute();
+  static void setup(FlutterRouterApi api) {
+    {
+      const BasicMessageChannel<dynamic> channel =
+          BasicMessageChannel<dynamic>('dev.flutter.pigeon.FlutterRouterApi.pushRoute', StandardMessageCodec());
+      channel.setMessageHandler((dynamic message) async {
+        final Map<dynamic, dynamic> mapMessage = message as Map<dynamic, dynamic>;
+        final PushRoute input = PushRoute._fromMap(mapMessage);
+        api.pushRoute(input);
+      });
+    }
+    {
+      const BasicMessageChannel<dynamic> channel =
+          BasicMessageChannel<dynamic>('dev.flutter.pigeon.FlutterRouterApi.popRoute', StandardMessageCodec());
+      channel.setMessageHandler((dynamic message) async {
+        final Map<dynamic, dynamic> mapMessage = message as Map<dynamic, dynamic>;
+        api.popRoute();
+      });
+    }
+  }
+}
+
 class HostRouterApi {
   Future<void> pushRoute(PushRoute arg) async {
     final Map<dynamic, dynamic> requestMap = arg._toMap();
     const BasicMessageChannel<dynamic> channel =
         BasicMessageChannel<dynamic>('dev.flutter.pigeon.HostRouterApi.pushRoute', StandardMessageCodec());
+    
+    final Map<dynamic, dynamic> replyMap = await channel.send(requestMap);
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null);
+    } else if (replyMap['error'] != null) {
+      final Map<dynamic, dynamic> error = replyMap['error'];
+      throw PlatformException(
+          code: error['code'],
+          message: error['message'],
+          details: error['details']);
+    } else {
+      // noop
+    }
+    
+  }
+  Future<void> popRoute(PopRoute arg) async {
+    final Map<dynamic, dynamic> requestMap = arg._toMap();
+    const BasicMessageChannel<dynamic> channel =
+        BasicMessageChannel<dynamic>('dev.flutter.pigeon.HostRouterApi.popRoute', StandardMessageCodec());
     
     final Map<dynamic, dynamic> replyMap = await channel.send(requestMap);
     if (replyMap == null) {

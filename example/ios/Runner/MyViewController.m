@@ -6,6 +6,8 @@
 //
 
 #import "MyViewController.h"
+#import "AppDelegate.h"
+@import host_router;
 
 @interface MyViewController ()
 
@@ -29,8 +31,13 @@
 */
 
 -(IBAction)onDismiss:(id)sender {
-  [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+  AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+  [appDelegate.hostRouterPlugin pop];
 }
 
+-(IBAction)onPush:(id)sender {
+  AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+  [appDelegate.hostRouterPlugin push:@"/page4"];
+}
 
 @end

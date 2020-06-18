@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MyViewController : UIViewController
 -(IBAction)onDismiss:(id)sender;
+-(IBAction)onPush:(id)sender;
 @end
 
 NS_ASSUME_NONNULL_END

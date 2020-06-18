@@ -4,9 +4,20 @@ class PushRoute {
   String name;
 }
 
+class PopRoute{
+  String name;
+}
+
 @HostApi()
 abstract class HostRouterApi {
   void pushRoute(PushRoute info);
+  void popRoute(PopRoute info);
+}
+
+@FlutterApi()
+abstract class FlutterRouterApi {
+  void pushRoute(PushRoute info);
+  void popRoute();
 }
 
 void configurePigeon(PigeonOptions opts) {

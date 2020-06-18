@@ -8,13 +8,24 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class HRPushRoute;
+@class HRPopRoute;
 
 @interface HRPushRoute : NSObject
 @property(nonatomic, copy, nullable) NSString * name;
 @end
 
+@interface HRPopRoute : NSObject
+@property(nonatomic, copy, nullable) NSString * name;
+@end
+
+@interface HRFlutterRouterApi : NSObject
+- (instancetype)initWithBinaryMessenger:(id<FlutterBinaryMessenger>)binaryMessenger;
+- (void)pushRoute:(HRPushRoute*)input completion:(void(^)(NSError*))completion;
+- (void)popRoute:(void(^)(NSError*))completion;
+@end
 @protocol HRHostRouterApi
 -(void)pushRoute:(HRPushRoute*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(void)popRoute:(HRPopRoute*)input error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void HRHostRouterApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<HRHostRouterApi> _Nullable api);

@@ -33,6 +33,14 @@
                         <action selector="onDismiss:" destination="-1" eventType="touchUpInside" id="I7h-KA-ZKB"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbx-Gu-d1t">
+                    <rect key="frame" x="190" y="336" width="35" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Push"/>
+                    <connections>
+                        <action selector="onPush:" destination="-1" eventType="touchUpInside" id="YbN-1Z-hgJ"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
