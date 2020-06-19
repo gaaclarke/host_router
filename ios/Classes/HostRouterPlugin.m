@@ -48,14 +48,11 @@
 
 
 -(void)pop {
-  NSError* error;
-  HRPopRoute* popRoute = [[HRPopRoute alloc] init];
-  [self popRoute:popRoute error:&error];
-//  [_flutterApi popRoute:^(NSError * _Nonnull error) {
-//    if (error != nil) {
-//      NSLog(@"error: %@", error);
-//    }
-//  }];
+  [_flutterApi popRoute:^(NSError * _Nonnull error) {
+    if (error != nil) {
+      NSLog(@"error: %@", error);
+    }
+  }];
 }
 
 -(void)push:(NSString*)path {
