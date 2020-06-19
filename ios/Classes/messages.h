@@ -24,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)popRoute:(void(^)(NSError*))completion;
 @end
 @protocol HRHostRouterApi
--(void)pushRoute:(HRPushRoute*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(void)pushHostRoute:(HRPushRoute*)input error:(FlutterError *_Nullable *_Nonnull)error;
+-(void)pushFlutterRoute:(HRPushRoute*)input error:(FlutterError *_Nullable *_Nonnull)error;
 -(void)popRoute:(HRPopRoute*)input error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 

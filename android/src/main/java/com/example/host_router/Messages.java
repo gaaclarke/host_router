@@ -79,21 +79,44 @@ public class Messages {
 
   /** Generated interface from Pigeon that represents a handler of messages from Flutter.*/
   public interface HostRouterApi {
-    void pushRoute(PushRoute arg);
+    void pushHostRoute(PushRoute arg);
+    void pushFlutterRoute(PushRoute arg);
     void popRoute(PopRoute arg);
 
     /** Sets up an instance of `HostRouterApi` to handle messages through the `binaryMessenger` */
     public static void setup(BinaryMessenger binaryMessenger, HostRouterApi api) {
       {
         BasicMessageChannel<Object> channel =
-            new BasicMessageChannel<Object>(binaryMessenger, "dev.flutter.pigeon.HostRouterApi.pushRoute", new StandardMessageCodec());
+            new BasicMessageChannel<Object>(binaryMessenger, "dev.flutter.pigeon.HostRouterApi.pushHostRoute", new StandardMessageCodec());
         if (api != null) {
           channel.setMessageHandler(new BasicMessageChannel.MessageHandler<Object>() {
             public void onMessage(Object message, BasicMessageChannel.Reply<Object> reply) {
               PushRoute input = PushRoute.fromMap((HashMap)message);
               HashMap<String, HashMap> wrapped = new HashMap<String, HashMap>();
               try {
-                api.pushRoute(input);
+                api.pushHostRoute(input);
+                wrapped.put("result", null);
+              }
+              catch (Exception exception) {
+                wrapped.put("error", wrapError(exception));
+              }
+              reply.reply(wrapped);
+            }
+          });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<Object>(binaryMessenger, "dev.flutter.pigeon.HostRouterApi.pushFlutterRoute", new StandardMessageCodec());
+        if (api != null) {
+          channel.setMessageHandler(new BasicMessageChannel.MessageHandler<Object>() {
+            public void onMessage(Object message, BasicMessageChannel.Reply<Object> reply) {
+              PushRoute input = PushRoute.fromMap((HashMap)message);
+              HashMap<String, HashMap> wrapped = new HashMap<String, HashMap>();
+              try {
+                api.pushFlutterRoute(input);
                 wrapped.put("result", null);
               }
               catch (Exception exception) {

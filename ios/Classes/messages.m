@@ -96,13 +96,30 @@ void HRHostRouterApiSetup(id<FlutterBinaryMessenger> binaryMessenger, id<HRHostR
   {
     FlutterBasicMessageChannel *channel =
       [FlutterBasicMessageChannel
-        messageChannelWithName:@"dev.flutter.pigeon.HostRouterApi.pushRoute"
+        messageChannelWithName:@"dev.flutter.pigeon.HostRouterApi.pushHostRoute"
         binaryMessenger:binaryMessenger];
     if (api) {
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         FlutterError *error;
         HRPushRoute *input = [HRPushRoute fromMap:message];
-        [api pushRoute:input error:&error];
+        [api pushHostRoute:input error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    }
+    else {
+      [channel setMessageHandler:nil];
+    }
+  }
+  {
+    FlutterBasicMessageChannel *channel =
+      [FlutterBasicMessageChannel
+        messageChannelWithName:@"dev.flutter.pigeon.HostRouterApi.pushFlutterRoute"
+        binaryMessenger:binaryMessenger];
+    if (api) {
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        FlutterError *error;
+        HRPushRoute *input = [HRPushRoute fromMap:message];
+        [api pushFlutterRoute:input error:&error];
         callback(wrapResult(nil, error));
       }];
     }

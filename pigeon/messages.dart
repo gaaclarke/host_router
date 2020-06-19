@@ -10,7 +10,8 @@ class PopRoute{
 
 @HostApi()
 abstract class HostRouterApi {
-  void pushRoute(PushRoute info);
+  void pushHostRoute(PushRoute info);
+  void pushFlutterRoute(PushRoute info);
   void popRoute(PopRoute info);
 }
 

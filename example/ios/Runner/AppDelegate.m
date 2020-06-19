@@ -30,17 +30,20 @@
   if ([published isKindOfClass:[HostRouterPlugin class]]) {
     HostRouterPlugin *plugin = (HostRouterPlugin *)published;
     self.hostRouterPlugin = plugin;
-    plugin.pushHandler = ^(NSString *name) {
+    plugin.pushHostHandler = ^(NSString *name) {
       if ([name isEqualToString:@"/page3"]) {
         MyViewController* myViewController = [[MyViewController alloc] init];
         [self.navigationController pushViewController:myViewController animated:YES];
-      } else if ([name isEqualToString:@"/page4"]) {
+      } else {
+        NSLog(@"unrecognized path: %@", name);
+      }
+    };
+    plugin.pushFlutterHandler = ^(NSString *name) {
+      if (![self.navigationController.topViewController isKindOfClass:[FlutterViewController class]]) {
         FlutterEngine* engine = self.flutterViewController.engine;
         engine.viewController = nil;
         FlutterViewController* vc = [[FlutterViewController alloc] initWithEngine:self.flutterViewController.engine nibName:nil bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
-      } else {
-        NSLog(@"unrecognized path: %@", name);
       }
     };
     plugin.popHandler = ^(NSString *name) {

@@ -21,14 +21,6 @@
   return self;
 }
 
--(void)pushRoute:(HRPushRoute*)input error:(FlutterError *_Nullable *_Nonnull)error {
-  if (self.pushHandler) {
-    self.pushHandler(input.name);
-  } else {
-    *error = [FlutterError errorWithCode:@"HostRouterPlugin" message:@"no handler set" details:nil];
-  }
-}
-
 -(void)popRoute:(HRPopRoute*)input error:(FlutterError *_Nullable *_Nonnull)error {
   if (self.popHandler) {
     self.popHandler(input.name);
@@ -36,6 +28,24 @@
     *error = [FlutterError errorWithCode:@"HostRouterPlugin" message:@"no handler set" details:nil];
   }
 }
+
+- (void)pushFlutterRoute:(nonnull HRPushRoute *)input error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
+  if (self.pushFlutterHandler) {
+    self.pushFlutterHandler(input.name);
+  } else {
+    *error = [FlutterError errorWithCode:@"HostRouterPlugin" message:@"no handler set" details:nil];
+  }
+
+}
+
+- (void)pushHostRoute:(nonnull HRPushRoute *)input error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
+  if (self.pushHostHandler) {
+    self.pushHostHandler(input.name);
+  } else {
+    *error = [FlutterError errorWithCode:@"HostRouterPlugin" message:@"no handler set" details:nil];
+  }
+}
+
 
 -(void)pop {
   NSError* error;

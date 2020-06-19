@@ -64,11 +64,13 @@ class HostRouterApp extends StatelessWidget {
   final HostRouterApi _api = HostRouterApi();
 
   void _push(BuildContext context, String name) {
+    PushRoute pushRouteMessage = PushRoute()..name = name;
     if (routeMap[name].location == RouteLocation.flutter) {
       Navigator.of(context).pushNamed(name);
+      _api.pushFlutterRoute(pushRouteMessage);
+    } else {
+      _api.pushHostRoute(pushRouteMessage);
     }
-    PushRoute pushRouteMessage = PushRoute()..name = name;
-    _api.pushRoute(pushRouteMessage);
   }
 
   void _pop(BuildContext context) {
