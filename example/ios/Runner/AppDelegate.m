@@ -35,6 +35,8 @@
         MyViewController* myViewController = [[MyViewController alloc] init];
         [self.navigationController pushViewController:myViewController animated:YES];
       } else if ([name isEqualToString:@"/page4"]) {
+        FlutterEngine* engine = self.flutterViewController.engine;
+        engine.viewController = nil;
         FlutterViewController* vc = [[FlutterViewController alloc] initWithEngine:self.flutterViewController.engine nibName:nil bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
       } else {

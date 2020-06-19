@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return RouterPage(Scaffold(
       appBar: AppBar(
         title: const Text('Page1 example app'),
       ),
@@ -59,14 +59,14 @@ class Page1 extends StatelessWidget {
           ]
         ),
       ),
-    );
+    ));
   }
 }
 
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return RouterPage(Scaffold(
       appBar: AppBar(
         title: const Text('Page2 example app'),
       ),
@@ -83,14 +83,14 @@ class Page2 extends StatelessWidget {
           ]
         ),
       ),
-    );
+    ));
   }
 }
 
 class Page4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return RouterPage(Scaffold(
       appBar: AppBar(
         title: const Text('Page4 example app'),
       ),
@@ -107,6 +107,6 @@ class Page4 extends StatelessWidget {
           ]
         ),
       ),
-    );
+    ));
   }
 }

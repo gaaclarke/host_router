@@ -66,10 +66,9 @@ class HostRouterApp extends StatelessWidget {
   void _push(BuildContext context, String name) {
     if (routeMap[name].location == RouteLocation.flutter) {
       Navigator.of(context).pushNamed(name);
-    } else {
-      PushRoute pushRouteMessage = PushRoute()..name = name;
-      _api.pushRoute(pushRouteMessage);
     }
+    PushRoute pushRouteMessage = PushRoute()..name = name;
+    _api.pushRoute(pushRouteMessage);
   }
 
   void _pop(BuildContext context) {
@@ -86,11 +85,22 @@ class HostRouterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _MyFlutterRouterApi.instance.pusher = (String name) { _push(context, name); };
-    _MyFlutterRouterApi.instance.popper = () { _pop(context); };
     return _appBuilder((RouteSettings settings) {
       return _makeRoute(routeMap, settings);
     });
+  }
+}
+
+class RouterPage extends StatelessWidget {
+  RouterPage(this.child);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    _MyFlutterRouterApi.instance.pusher = (String name) { RouterNavigator.of(context).push(name); };
+    _MyFlutterRouterApi.instance.popper = () { RouterNavigator.of(context).pop(); };
+    return child;
   }
 }
 
