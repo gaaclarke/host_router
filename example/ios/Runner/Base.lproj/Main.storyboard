@@ -12,6 +12,9 @@
             <objects>
                 <tableViewController id="5RH-6D-IFb" customClass="FlutterViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="Root View Controller" id="5wR-Gt-fog"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="engineAllowHeadlessExecution" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AWL-xY-ZfB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
